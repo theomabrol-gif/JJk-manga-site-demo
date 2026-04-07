@@ -1,0 +1,86 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "User Profile",
+      "description": "Stores user preferences, bookmarks, and reading progress.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "displayName": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "bookmarks": { "type": "array", "items": { "type": "string" } },
+        "readingProgress": { "type": "object" },
+        "lastReadChapterId": { "type": "string" },
+        "role": { "type": "string", "enum": ["user", "admin"] }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "Chapter": {
+      "title": "Manga Chapter",
+      "description": "Represents a single chapter of Jujutsu Kaisen.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "number": { "type": "number" },
+        "title": { "type": "string" },
+        "pages": { "type": "array", "items": { "type": "string" } },
+        "releaseDate": { "type": "string", "format": "date-time" },
+        "arc": { "type": "string" },
+        "views": { "type": "number" },
+        "likes": { "type": "number" },
+        "commentsCount": { "type": "number" }
+      },
+      "required": ["id", "number", "title", "pages"]
+    },
+    "Character": {
+      "title": "JJK Character",
+      "description": "Profile of a Jujutsu Kaisen character.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "ability": { "type": "string" },
+        "domainExpansion": { "type": "string" },
+        "bio": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "isFanFavorite": { "type": "boolean" },
+        "role": { "type": "string" }
+      },
+      "required": ["id", "name", "imageUrl"]
+    },
+    "Comment": {
+      "title": "Chapter Comment",
+      "description": "User comment on a specific chapter.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "chapterId": { "type": "string" },
+        "userId": { "type": "string" },
+        "userName": { "type": "string" },
+        "userPhoto": { "type": "string" },
+        "text": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "chapterId", "userId", "text"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User profile documents."
+    },
+    "/chapters/{chapterId}": {
+      "schema": "Chapter",
+      "description": "Manga chapters collection."
+    },
+    "/characters/{characterId}": {
+      "schema": "Character",
+      "description": "Character profiles collection."
+    },
+    "/comments/{commentId}": {
+      "schema": "Comment",
+      "description": "Global comments collection, filtered by chapterId."
+    }
+  }
+}
